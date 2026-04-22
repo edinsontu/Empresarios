@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, throwError, BehaviorSubject, tap } from 'rxjs';
+import { environments } from '../../environments/environments';
 
 export interface Carrito {
   clienteId: string;
@@ -14,7 +15,7 @@ export interface Carrito {
 })
 export class CarritoService { // Cambié el nombre a CarritoService por convención
 
-  private API_URL = 'http://localhost:3000/api/carrito';
+  private API_URL = `${environments.API_BASE_URL}/carrito`;
 
   private carritoSubject = new BehaviorSubject<Carrito | null>(null);
   carrito$ = this.carritoSubject.asObservable();

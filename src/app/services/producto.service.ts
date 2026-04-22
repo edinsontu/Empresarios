@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { catchError, Observable, throwError } from 'rxjs';
+import { environments } from '../../environments/environments';
 
 // URL del backend Node.js
-const API_URL = 'http://localhost:3000/api/productos';
+const API_URL = `${environments.API_BASE_URL}/productos`;
 
 @Injectable({
   providedIn: 'root'

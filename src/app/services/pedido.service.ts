@@ -9,7 +9,7 @@ declare var ePayco: any; // Acceso al script global de ePayco
   providedIn: 'root',
 })
 export class PedidoService {
-  private apiUrl = 'http://localhost:3000/api/';
+  private apiUrl = `${environments.API_BASE_URL}/`;
 
   constructor(private http: HttpClient) {}
 
@@ -40,8 +40,8 @@ export class PedidoService {
       lang: 'es',
       external: 'false',
 
-      confirmation: `https://embattled-dance-component.ngrok-free.dev/api/pagos/confirmar-epayco`,
-      response: `https://embattled-dance-component.ngrok-free.dev/api/pagos/redireccion-final`,
+      confirmation: `${environments.API_BASE_URL}/pagos/confirmar-epayco`,
+      response: `${environments.API_BASE_URL}/pagos/redireccion-final`,
 
       name_billing: usuario.name,
       address_billing: 'Dirección registrada',

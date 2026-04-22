@@ -72,8 +72,9 @@ const verificarEstadoTrasPago = async (req, res) => {
 
 const redireccionFinal = (req, res) => {
   const queryParams = new URLSearchParams(req.query).toString();
+  const frontendUrl = process.env.FRONTEND_URL || "http://localhost:4200";
 
-  res.redirect(`http://localhost:4200/pago-finalizado?${queryParams}`);
+  res.redirect(`${frontendUrl}/pago-finalizado?${queryParams}`);
 };
 
 module.exports = {

@@ -9,10 +9,13 @@ dotenv.config();
 // Crear aplicación Express
 const app = express();
 
+const frontendUrl = process.env.FRONTEND_URL || "http://localhost:4200";
+const allowedOrigins = frontendUrl.split(",").map((origin) => origin.trim());
+
 // Configuración de middlewares
 app.use(
   cors({
-    origin: "http://localhost:4200",
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
@@ -22,13 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Conexión a MongoDB
 mongoose
-  .connect(
-    process.env.MONGODB_URI || "mongodb://localhost:27017/microempresarios",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    },
-  )
+  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/microempresarios")
   .then(() => console.log("✅ Conectado a MongoDB"))
   .catch((err) => console.error("❌ Error de conexión:", err));
 

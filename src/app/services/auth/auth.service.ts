@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Observable, tap, BehaviorSubject } from 'rxjs';
 import { isPlatformBrowser } from '@angular/common';
 import { Inject, PLATFORM_ID } from '@angular/core';
+import { environments } from '../../../environments/environments';
 
 export interface Cliente {
   name: string;
@@ -23,7 +24,7 @@ export interface Emprendedor {
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'http://localhost:3000/api'; // Tu URL del backend
+  private apiUrl = environments.API_BASE_URL;
   private isBrowser: boolean;
   private loginStatus: BehaviorSubject<boolean>;
   loginStatus$: Observable<boolean>;
