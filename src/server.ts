@@ -59,6 +59,17 @@ app.use('/api', async (req, res) => {
 
     res.status(backendResponse.status);
     backendResponse.headers.forEach((value, key) => {
+      const normalized = key.toLowerCase();
+      // Avoid forwarding hop-by-hop/encoding headers that can break browser decoding.
+      if (
+        normalized === 'content-encoding' ||
+        normalized === 'content-length' ||
+        normalized === 'transfer-encoding' ||
+        normalized === 'connection'
+      ) {
+        return;
+      }
+
       res.setHeader(key, value);
     });
 
