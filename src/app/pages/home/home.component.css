@@ -1,0 +1,237 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: #f3f4f6;
+  color: #1f2937;
+  margin: 0;
+  padding: 0;
+}
+
+/* --- HERO / SLIDER --- */
+.hero {
+  background: linear-gradient(135deg, gray, white);
+  padding: 4rem 1rem 5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 480px;
+  position: relative;
+  overflow: hidden;
+  color: black;
+  height: 90vh;
+}
+
+.slider {
+  width: 100%;
+  height: 100%;
+  max-width: 1000px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.slide {
+  display: none;
+  text-align: center;
+  animation: fadeInUp 0.8s ease forwards;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.slide.active {
+  display: flex;
+}
+
+.card {
+  max-width: 700px;
+  margin: 0 auto;
+  background-color: white;
+  padding: 2rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  width: 90%;
+}
+
+.card h1 {
+  font-weight: 700;
+  line-height: 1.2;
+  text-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+}
+
+.card p {
+  font-weight: 400;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.25);
+}
+
+.card img {
+  max-width: 300px;
+  width: 100%;
+  object-fit: contain;
+  margin-bottom: 1.5rem;
+  filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.1));
+  transition: transform 0.3s ease;
+  cursor: default;
+}
+
+.card img:hover {
+  transform: scale(1.05);
+}
+
+.card button {
+  background: linear-gradient(90deg, #543255, #9f789f);
+  border: none;
+  padding: 0.75rem 1.5rem;
+  color: white;
+  font-weight: 700;
+  font-size: 1rem;
+  border-radius: 30px;
+  cursor: pointer;
+  box-shadow: 0 6px 12px #866187;
+  transition: background 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+}
+
+.card button:hover {
+  background: linear-gradient(90deg,#9f789f, #543255);
+  box-shadow: 0 10px 20px #6d496e;
+  transform: translateY(-2px);
+}
+
+/* --- SLIDER CONTROLS --- */
+.slider-controls {
+  position: absolute;
+  bottom: 2rem;
+  right: 30px;
+  display: flex;
+  gap: 1rem;
+}
+
+.slider-controls button {
+  background: #543255;
+  border: none;
+  padding: 0.4rem 0.9rem;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  color: gray;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.slider-controls button:hover {
+  background: #b890b8;
+}
+
+/* --- FADE IN ANIMATION --- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* --- BENEFICIOS --- */
+.benefits {
+  max-width: 1050px;
+  margin: 4rem auto 5rem;
+  padding: 0 1.5rem;
+  text-align: center;
+}
+
+.benefits h2 {
+  font-size: 2.6rem;
+  margin-bottom: 2.5rem;
+  color: #111827;
+  font-weight: 700;
+}
+
+.benefit-list {
+  display: flex;
+  gap: 2rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.benefit {
+  background: white;
+  padding: 2rem 1.6rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
+  border-radius: 16px;
+  flex: 1 1 260px;
+  transition: transform 0.3s ease;
+  cursor: default;
+}
+
+.benefit:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+}
+
+.benefit h3 {
+  font-weight: 600;
+  margin-bottom: 0.6rem;
+  color: #866187;
+  font-size: 1.3rem;
+}
+
+.benefit p {
+  color: #4b5563;
+  font-weight: 400;
+  font-size: 1rem;
+}
+
+/* --- LLAMADO A LA ACCIÓN (CTA) --- */
+.cta {
+  background: linear-gradient(90deg, #6d496e, #9f789f);
+  padding: 3rem 1.5rem;
+  text-align: center;
+  color: white;
+  border-radius: 20px;
+  max-width: 720px;
+  margin: 0 auto 4rem;
+  box-shadow: 0 14px 35px violet;
+}
+
+.cta h2 {
+  font-weight: 700;
+  font-size: 2.4rem;
+  margin-bottom: 1rem;
+}
+
+.cta p {
+  font-weight: 400;
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.cta button {
+  background: #543255;
+  color: white;
+  border: none;
+  padding: 0.95rem 2.8rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+}
+
+.cta button:hover {
+  background: #b890b8;
+  color: white;
+  box-shadow: 0 12px 30px #543255;
+}

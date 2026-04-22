@@ -1,0 +1,59 @@
+<div class="dashboard-container">
+  <h2><i class="fas fa-store"></i> Productos Disponibles</h2>
+
+  <div class="formulario animar">
+    <label for="busqueda">
+      <i class="fas fa-search"></i> Buscar producto o emprendedor:
+    </label>
+    <input
+      id="busqueda"
+      [(ngModel)]="busqueda"
+      (input)="filtrarProductos()"
+      type="text"
+      placeholder="🔍 Escribe para buscar..."
+    />
+  </div>
+
+  <div class="lista-productos">
+    <div *ngFor="let producto of productosFiltrados" class="producto animar">
+      <h4><i class="fas fa-box"></i> {{ producto.nombre }}</h4>
+      <img
+        *ngIf="producto.imagen"
+        [src]="producto.imagen"
+        alt="{{ producto.nombre }}"
+        class="producto-img"
+      />
+      <p>
+        <strong><i class="fas fa-tag"></i> Precio:</strong>
+        {{ producto.precio | currency }}
+      </p>
+      <p>
+        <strong><i class="fas fa-info-circle"></i> Descripción:</strong>
+        {{ producto.descripcion }}
+      </p>
+      <p>
+        <strong><i class="fas fa-user"></i> Emprendedor:</strong>
+        {{ producto.emprendedorId?.name }}
+      </p>
+      <p>
+        <strong><i class="fas fa-briefcase"></i> Emprendimiento:</strong>
+        {{ producto.emprendedorId?.nameEmprendimiento }}
+      </p>
+
+      <div class="producto-acciones">
+        <a
+          [href]="generarLinkWhatsApp(producto.emprendedorId?.tel)"
+          target="_blank"
+        >
+          <button class="btn-whatsapp">
+            <i class="fab fa-whatsapp"></i> WhatsApp
+          </button>
+        </a>
+
+        <button class="btn-add-cart" (click)="agregarAlCarrito(producto)">
+          <i class="fas fa-cart-plus"></i> Agregar al Carrito
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

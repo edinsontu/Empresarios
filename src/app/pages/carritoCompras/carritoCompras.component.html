@@ -1,0 +1,66 @@
+<section class="hero-mini">
+  <div class="hero-content">
+    <h1>Tu Carrito de Compras</h1>
+    <p>Gestiona tus productos seleccionados de microempresarios locales</p>
+  </div>
+</section>
+
+<div class="container">
+  <div *ngIf="cargando" class="status-msg">
+    <p>Cargando tus productos...</p>
+  </div>
+
+  <div *ngIf="!cargando && (!carrito || carrito.productos.length === 0)" class="empty-cart-card card">
+    <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" alt="Carrito vacío">
+    <h2>Tu carrito está vacío</h2>
+    <p>Parece que aún no has añadido productos de nuestros emprendedores.</p>
+    <button (click)="irProductos()" class="btn-primary">Explorar productos</button>
+  </div>
+
+  <div class="cart-grid" *ngIf="!cargando && carrito && carrito.productos.length > 0">
+    
+    <div class="products-list">
+      <div class="product-item card" *ngFor="let item of carrito.productos">
+        <img [src]="item.productoId.imagen" [alt]="item.productoId.nombre">
+        
+        <div class="product-info">
+          <h3>{{ item.productoId.nombre }}</h3>
+          <p class="price">${{ item.productoId.precio | number }}</p>
+        </div>
+
+        <div class="quantity-controls">
+          <button (click)="cambiarCantidad(item.productoId._id, item.cantidad, -1)">-</button>
+          <span>{{ item.cantidad }}</span>
+          <button (click)="cambiarCantidad(item.productoId._id, item.cantidad, 1)">+</button>
+        </div>
+
+        <div class="item-total">
+          <p>Total: <strong>${{ item.productoId.precio * item.cantidad | number }}</strong></p>
+        </div>
+
+        <button class="btn-delete" (click)="eliminarProducto(item.productoId._id)">
+          &times;
+        </button>
+      </div>
+
+      <button class="btn-clear" (click)="vaciarCarrito()">Vaciar Carrito</button>
+    </div>
+
+    <div class="summary-section">
+      <div class="card summary-card">
+        <h2>Resumen</h2>
+        <hr>
+        <div class="summary-row">
+          <span>Subtotal:</span>
+          <span>${{ carrito.subtotal | number }}</span>
+        </div>
+        <div class="summary-row total">
+          <span>Total:</span>
+          <span>${{ carrito.total | number }}</span>
+        </div>
+        <button class="btn-checkout" (click)="procesarPago()">Finalizar Compra</button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,42 @@
+<div class="status-container">
+  <div class="status-card">
+    
+    <div *ngIf="estadoPago === 'aceptada'" class="status-content">
+      <div class="icon-circle success">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>
+      </div>
+      <h1>¡Pago Exitoso!</h1>
+      <p>Tu orden ha sido procesada correctamente. Pronto recibirás tus productos.</p>
+    </div>
+
+    <div *ngIf="estadoPago === 'rechazada'" class="status-content">
+      <div class="icon-circle error">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </div>
+      <h1>Pago Rechazado</h1>
+      <p>Hubo un problema con la transacción. Por favor, intenta de nuevo o usa otro método de pago.</p>
+    </div>
+
+    <div class="order-details">
+      <div class="detail-row">
+        <span>Referencia ePayco:</span>
+        <strong>{{ referencia }}</strong>
+      </div>
+      <div class="detail-row" *ngIf="monto">
+        <span>Total Pagado:</span>
+        <strong>${{ monto }}</strong>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="btn-primary" (click)="irAMisOrdenes()">Ver mis órdenes</button>
+      <button class="btn-secondary" (click)="irAInicio()">Volver al inicio</button>
+    </div>
+
+  </div>
+</div>

@@ -1,0 +1,73 @@
+<!-- Asegúrate de incluir Font Awesome en tu index.html -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+<div class="dashboard-container">
+
+  <video controls autoplay muted loop class="video-demo">
+    <source src="../../../assets/demo.mp4" type="video/mp4" />
+    Tu navegador no soporta videos HTML5.
+  </video>
+  
+  <h2><i class="fas fa-box-open"></i> Mis Productos</h2>
+
+  <button class="btn-agregar" (click)="mostrarFormularioAgregar()">
+    <i class="fas fa-plus-circle"></i> Agregar Producto
+  </button>
+
+  <div *ngIf="mostrarFormulario" class="formulario animar">
+    <h3><i class="fas fa-edit"></i> {{ editando ? 'Editar Producto' : 'Registrar Producto' }}</h3>
+    <form (ngSubmit)="registrarProducto()">
+      <label>
+        <span>Nombre:</span>
+        <input type="text" [(ngModel)]="nuevoProducto.nombre" name="nombre" required />
+      </label>
+
+      <label>
+        <span>Precio:</span>
+        <input type="number" [(ngModel)]="nuevoProducto.precio" name="precio" required />
+      </label>
+
+      <label>
+        <span>Descripción:</span>
+        <textarea [(ngModel)]="nuevoProducto.descripcion" name="descripcion" required></textarea>
+      </label>
+
+      <label>
+        URL Imagen:
+        <input type="text" [(ngModel)]="nuevoProducto.imagen" name="imagen"
+          placeholder="https://ejemplo.com/imagen.jpg" />
+      </label>
+
+
+      <!-- Vista previa -->
+      <img *ngIf="nuevoProducto.imagen" [src]="nuevoProducto.imagen" class="preview-img" />
+
+
+      <div class="acciones-form">
+        <button type="submit" class="btn-guardar">
+          <i class="fas fa-save"></i> {{ editando ? 'Actualizar' : 'Guardar' }}
+        </button>
+        <button type="button" (click)="cancelarFormulario()" class="btn-cancelar">
+          <i class="fas fa-times"></i> Cancelar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="lista-productos">
+    <div *ngFor="let producto of productos" class="producto animar">
+      <h4>{{ producto.nombre }}</h4>
+      <img *ngIf="producto.imagen" [src]="producto.imagen" alt="{{ producto.nombre }}" class="producto-img" />
+      <p><strong>Precio:</strong> ${{ producto.precio }}</p>
+      <p>{{ producto.descripcion }}</p>
+      <div class="acciones">
+        <button (click)="editarProducto(producto)" class="btn-editar">
+          <i class="fas fa-pencil-alt"></i> Editar
+        </button>
+        <button (click)="eliminarProducto(producto._id)" class="btn-eliminar">
+          <i class="fas fa-trash-alt"></i> Eliminar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

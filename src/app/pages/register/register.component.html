@@ -1,0 +1,42 @@
+<div class="registro-container">
+  <h2 class="registro-titulo">Regístrate</h2>
+
+  <div class="registro-opciones">
+    <!-- Emprendedor -->
+    <div class="registro-card">
+      <div class="icon-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <path d="M12 2L2 7h20L12 2z" />
+          <path d="M2 7v13h20V7" />
+          <path d="M12 22V12" />
+        </svg>
+      </div>
+      <h3>¿Eres emprendedor?</h3>
+      <ul>
+        <li>🚀 Crea tu emprendimiento</li>
+        <li>📦 Agrega tus productos</li>
+        <li>🎥 Videos de ayuda</li>
+      </ul>
+      <button (click)="irARegistroE()">Regístrate</button>
+    </div>
+
+    <!-- Cliente -->
+    <div class="registro-card">
+      <div class="icon-wrapper">
+        <svg xmlns="http://www.w3.org/2000/svg" class="lucide-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+          <circle cx="12" cy="12" r="10" />
+          <path d="M8 15s1.5 2 4 2 4-2 4-2" />
+          <path d="M9 9h.01" />
+          <path d="M15 9h.01" />
+        </svg>
+      </div>
+      <h3>¿Eres cliente?</h3>
+      <ul>
+        <li>🛍️ Explora productos</li>
+        <li>🤝 Apoya emprendedores</li>
+        <li>💳 Compra fácilmente</li>
+      </ul>
+      <button (click)="irARegistroC()">Regístrate</button>
+    </div>
+  </div>
+</div>

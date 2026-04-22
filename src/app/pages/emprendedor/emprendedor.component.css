@@ -1,0 +1,191 @@
+.dashboard-container {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  background-color: #fdfdfd;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  font-family: "Segoe UI", sans-serif;
+  color: #333;
+}
+
+h2 {
+  color: #866187;
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.btn-agregar {
+  background-color: #6d496e;
+  color: white;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.btn-agregar:hover {
+  background-color: #9f789f;
+}
+
+.formulario {
+  background-color: #f4f8fb;
+  padding: 20px;
+  margin-top: 20px;
+  border-left: 6px solid #b890b8;
+  border-radius: 8px;
+}
+
+label {
+  display: block;
+  margin-bottom: 12px;
+}
+
+label span {
+  font-weight: bold;
+  display: block;
+  margin-bottom: 4px;
+}
+
+input,
+textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 15px;
+  transition: border-color 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+  border-color: #9f789f;
+  outline: none;
+}
+
+.acciones-form {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.btn-guardar,
+.btn-cancelar,
+.btn-editar,
+.btn-eliminar {
+  padding: 8px 14px;
+  font-size: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.2s ease, background-color 0.3s ease;
+}
+
+.btn-guardar {
+  background-color: #27ae60;
+  color: white;
+}
+
+.btn-guardar:hover {
+  background-color: #1e8449;
+  transform: scale(1.05);
+}
+
+.btn-cancelar {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-cancelar:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}
+
+.lista-productos {
+  margin-top: 30px;
+}
+
+.producto {
+  background-color: #ffffff;
+  border: 1px solid #dcdcdc;
+  border-left: 6px solid #9f789f;
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 6px;
+  transition: box-shadow 0.3s ease;
+}
+
+.producto:hover {
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+}
+
+.acciones {
+  margin-top: 12px;
+  display: flex;
+  gap: 10px;
+}
+
+.btn-editar {
+  background-color: #f39c12;
+  color: white;
+}
+
+.btn-editar:hover {
+  background-color: #d68910;
+  transform: scale(1.05);
+}
+
+.btn-eliminar {
+  background-color: #e74c3c;
+  color: white;
+}
+
+.btn-eliminar:hover {
+  background-color: #c0392b;
+  transform: scale(1.05);
+}
+
+/* Animaciones suaves */
+.animar {
+  animation: fadeIn 0.6s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.producto-img {
+  max-width: 150px;
+  max-height: 100px;
+  border-radius: 6px;
+  box-shadow: 0 3px 6px rgba(0,0,0,0.15);
+  margin-top: 8px;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.producto-img:hover {
+  transform: scale(1.05);
+}
+
+.video-demo {
+  width: 100%;
+  max-width: 300px; /* Ideal para vertical */
+  margin: 0 auto 20px;
+  display: block;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
