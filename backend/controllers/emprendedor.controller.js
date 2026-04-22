@@ -4,14 +4,15 @@ const bcrypt = require('bcryptjs');
 const registrarEmprendedor = async (req, res) => {
   try {
     const { name, nameEmprendimiento, email, tel, password } = req.body;
+    const emailNormalizado = email?.trim().toLowerCase();
 
     // Validaciones básicas
-    if (!name || !nameEmprendimiento || !email || !password) {
+    if (!name?.trim() || !nameEmprendimiento?.trim() || !emailNormalizado || !password) {
       return res.status(400).json({ message: 'Todos los campos obligatorios deben estar llenos' });
     }
 
     // Verificar si ya existe un emprendedor con ese correo
-    const emprendedorExistente = await Emprendedor.findOne({ email });
+    const emprendedorExistente = await Emprendedor.findOne({ email: emailNormalizado });
     if (emprendedorExistente) {
       return res.status(400).json({ message: 'Ya existe un emprendedor con ese correo' });
     }
@@ -21,9 +22,9 @@ const registrarEmprendedor = async (req, res) => {
 
     // Crear el nuevo emprendedor
     const nuevoEmprendedor = new Emprendedor({
-      name,
-      nameEmprendimiento,
-      email,
+      name: name.trim(),
+      nameEmprendimiento: nameEmprendimiento.trim(),
+      email: emailNormalizado,
       tel,
       password: hashedPassword,
     });
@@ -31,6 +32,10 @@ const registrarEmprendedor = async (req, res) => {
     await nuevoEmprendedor.save();
     res.status(201).json({ message: 'Emprendedor registrado exitosamente' });
   } catch (error) {
+    if (error?.code === 11000) {
+      return res.status(400).json({ message: 'Ya existe un emprendedor con ese correo' });
+    }
+
     console.error('Error al registrar emprendedor:', error);
     res.status(500).json({
       message: 'Error interno al registrar emprendedor',
