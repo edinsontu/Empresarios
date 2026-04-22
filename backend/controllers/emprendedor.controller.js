@@ -31,7 +31,11 @@ const registrarEmprendedor = async (req, res) => {
     await nuevoEmprendedor.save();
     res.status(201).json({ message: 'Emprendedor registrado exitosamente' });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error('Error al registrar emprendedor:', error);
+    res.status(500).json({
+      message: 'Error interno al registrar emprendedor',
+      error: error.message,
+    });
   }
 };
 

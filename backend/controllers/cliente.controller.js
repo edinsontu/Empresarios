@@ -5,6 +5,10 @@ const registrarCliente = async (req, res) => {
   try {
     const { name, email, tel, password } = req.body;
 
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: 'Todos los campos obligatorios deben estar llenos' });
+    }
+
     // Verificar si ya existe un cliente con ese correo
     const clienteExistente = await Cliente.findOne({ email });
     if (clienteExistente) {
@@ -25,7 +29,11 @@ const registrarCliente = async (req, res) => {
     await nuevoCliente.save();
     res.status(201).json({ message: 'Cliente registrado exitosamente' });
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    console.error('Error al registrar cliente:', error);
+    res.status(500).json({
+      message: 'Error interno al registrar cliente',
+      error: error.message,
+    });
   }
 };
 

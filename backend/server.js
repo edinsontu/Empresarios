@@ -48,7 +48,16 @@ app.use("/api/ordenes", ordenRoutes);
 app.use("/api/pagos", pagoRoutes);
 
 app.get("/api/health", (req, res) => {
-  res.status(200).json({ ok: true, service: "backend" });
+  const mongoConnected = mongoose.connection.readyState === 1;
+  res.status(200).json({
+    ok: true,
+    service: "backend",
+    mongoConnected,
+  });
+});
+
+app.use("/api", (req, res) => {
+  res.status(404).json({ message: "Ruta API no encontrada" });
 });
 
 // Ruta de prueba
@@ -59,7 +68,10 @@ app.get("/", (req, res) => {
 // Manejo de errores centralizado
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send("¡Algo salió mal!");
+  res.status(500).json({
+    message: "Error interno del servidor",
+    error: err.message,
+  });
 });
 
 // Iniciar servidor
