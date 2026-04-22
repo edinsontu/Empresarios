@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { CarritoService, Carrito } from '../../services/carritoCompras.service'; // Ajusta la ruta
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
 import { PedidoService } from '../../services/pedido.service';
 import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-carrito',
@@ -15,16 +16,29 @@ export class CarritoComponent implements OnInit {
   carrito: Carrito | null = null;
   clienteId: string = '';
   cargando: boolean = true;
+  private isBrowser: boolean;
 
   constructor(
     private carritoService: CarritoService,
     private authService: AuthService,
     private router: Router,
     private pedidoService: PedidoService,
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: Object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
+
+  private safeGetLocalStorage(key: string): string | null {
+    if (!this.isBrowser) return null;
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
 
   ngOnInit(): void {
-    const storedId = localStorage.getItem('clienteId');
+    const storedId = this.safeGetLocalStorage('clienteId');
     if (storedId) {
       this.clienteId = storedId;
       this.cargarCarrito();
@@ -49,7 +63,7 @@ export class CarritoComponent implements OnInit {
 
   procesarPago() {
     const usuario = this.authService.getUsuarioActual();
-    const clienteId = localStorage.getItem('clienteId');
+    const clienteId = this.safeGetLocalStorage('clienteId');
 
     if (!clienteId) return;
 

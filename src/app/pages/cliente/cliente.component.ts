@@ -1,8 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ProductoService } from '../../services/producto.service';
 import { CarritoService } from '../../services/carritoCompras.service'; // 1. Importar servicio
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard-cliente',
@@ -17,14 +17,27 @@ export class ClienteComponent implements OnInit {
   productosFiltrados: any[] = [];
   busqueda: string = '';
   clienteId: string = ''; 
+  private isBrowser: boolean;
 
   constructor(
     private productoService: ProductoService,
-    private carritoService: CarritoService
-  ) { }
+    private carritoService: CarritoService,
+    @Inject(PLATFORM_ID) private platformId: Object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
+
+  private safeGetLocalStorage(key: string): string | null {
+    if (!this.isBrowser) return null;
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
 
   ngOnInit() {
-    const storedId = localStorage.getItem('clienteId');
+    const storedId = this.safeGetLocalStorage('clienteId');
     if (storedId) this.clienteId = storedId;
 
     this.productoService.getTodosLosProductos().subscribe(

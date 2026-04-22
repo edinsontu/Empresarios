@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { AuthService } from '../../services/auth/auth.service';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
@@ -17,12 +18,25 @@ export class NavbarComponent implements OnInit {
   nombreUsuario: string = '';
   dropdownVisible = false;
   isClient: boolean = false;
+  private isBrowser: boolean;
 
   constructor(
     private authService: AuthService,
     private router: Router,
     protected carritoService: CarritoService,
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: Object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
+
+  private safeGetLocalStorage(key: string): string | null {
+    if (!this.isBrowser) return null;
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
 
   ngOnInit(): void {
     this.authService.loginStatus$.subscribe((status) => {
@@ -32,8 +46,8 @@ export class NavbarComponent implements OnInit {
         const usuario = this.authService.getUsuarioActual();
         this.nombreUsuario = usuario?.name || 'Usuario';
 
-        const idClient = localStorage.getItem('clienteId');
-        const idEmrependedor = localStorage.getItem('emprendedorId');
+        const idClient = this.safeGetLocalStorage('clienteId');
+        const idEmrependedor = this.safeGetLocalStorage('emprendedorId');
         if (idClient) {
           this.carritoService.getCarrito(idClient).subscribe();
           this.isClient = true;
