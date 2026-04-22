@@ -47,6 +47,10 @@ app.use("/api", loginRoutes);
 app.use("/api/ordenes", ordenRoutes);
 app.use("/api/pagos", pagoRoutes);
 
+app.get("/api/health", (req, res) => {
+  res.status(200).json({ ok: true, service: "backend" });
+});
+
 // Ruta de prueba
 app.get("/", (req, res) => {
   res.send("API de Microempresarios funcionando");
