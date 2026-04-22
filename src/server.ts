@@ -6,6 +6,7 @@ import {
 } from '@angular/ssr/node';
 import express from 'express';
 import { dirname, resolve } from 'node:path';
+import { Readable } from 'node:stream';
 import { fileURLToPath } from 'node:url';
 
 const serverDistFolder = dirname(fileURLToPath(import.meta.url));
@@ -13,6 +14,7 @@ const browserDistFolder = resolve(serverDistFolder, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
+const apiProxyTarget = process.env['API_PROXY_TARGET'] || 'http://localhost:3000';
 
 /**
  * Example Express Rest API endpoints can be defined here.
@@ -25,6 +27,52 @@ const angularApp = new AngularNodeAppEngine();
  * });
  * ```
  */
+
+/**
+ * Proxy API requests to the backend service.
+ */
+app.use('/api/**', async (req, res) => {
+  try {
+    const targetUrl = new URL(req.originalUrl, apiProxyTarget).toString();
+    const headers = new Headers();
+
+    Object.entries(req.headers).forEach(([key, value]) => {
+      if (!value || key.toLowerCase() === 'host' || key.toLowerCase() === 'content-length') {
+        return;
+      }
+
+      headers.set(key, Array.isArray(value) ? value.join(',') : value);
+    });
+
+    const method = req.method.toUpperCase();
+    const requestInit: RequestInit & { duplex?: 'half' } = {
+      method,
+      headers,
+    };
+
+    if (method !== 'GET' && method !== 'HEAD') {
+      requestInit.body = Readable.toWeb(req) as ReadableStream;
+      requestInit.duplex = 'half';
+    }
+
+    const backendResponse = await fetch(targetUrl, requestInit);
+
+    res.status(backendResponse.status);
+    backendResponse.headers.forEach((value, key) => {
+      res.setHeader(key, value);
+    });
+
+    if (!backendResponse.body) {
+      res.end();
+      return;
+    }
+
+    Readable.fromWeb(backendResponse.body as any).pipe(res);
+  } catch (error) {
+    console.error('Error proxying API request:', error);
+    res.status(502).json({ error: 'No fue posible conectar con el backend' });
+  }
+});
 
 /**
  * Serve static files from /browser
