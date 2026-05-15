@@ -9,11 +9,13 @@ dotenv.config();
 // Crear aplicación Express
 const app = express();
 
+const frontendUrl = process.env.FRONTEND_URL || "http://localhost:4200";
+const allowedOrigins = frontendUrl.split(",").map((origin) => origin.trim());
+
 // Configuración de middlewares
-const allowedOrigin = process.env.FRONTEND_URL || "http://localhost:4200";
 app.use(
   cors({
-    origin: allowedOrigin,
+    origin: allowedOrigins,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
@@ -23,13 +25,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // Conexión a MongoDB
 mongoose
-  .connect(
-    process.env.MONGODB_URI || process.env.MONGO_URI || "mongodb://localhost:27017/microempresarios",
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    },
-  )
+  .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/microempresarios")
   .then(() => console.log("✅ Conectado a MongoDB"))
   .catch((err) => console.error("❌ Error de conexión:", err));
 
@@ -41,21 +37,28 @@ const productoRoutes = require("./routes/producto.routes");
 const loginRoutes = require("./routes/login.routes"); 
 const ordenRoutes = require("./routes/orden.routes");
 const pagoRoutes = require("./routes/pago.routes");
-const direccionRoutes = require("./routes/direccion.routes");
-const envioRoutes = require("./routes/envio.routes");
-const estadisticaEmprendedorRoutes = require("./routes/estadisticaEmprendedor.routes");
 
 // Configuración de rutas
 app.use("/api/clientes", clienteRoutes);
-app.use("/api/carrito", carritoComprasRoutes);
+app.use("/api/carrito", carritoComprasRoutes); // Agrega esta línea para las rutas de carrito de compras
 app.use("/api/emprendedores", emprendedorRoutes);
 app.use("/api/productos", productoRoutes);
 app.use("/api", loginRoutes); 
 app.use("/api/ordenes", ordenRoutes);
 app.use("/api/pagos", pagoRoutes);
-app.use("/api/direcciones", direccionRoutes); 
-app.use("/api/envios", envioRoutes);
-app.use("/api/estadisticasEmprendedor", estadisticaEmprendedorRoutes);
+
+app.get("/api/health", (req, res) => {
+  const mongoConnected = mongoose.connection.readyState === 1;
+  res.status(200).json({
+    ok: true,
+    service: "backend",
+    mongoConnected,
+  });
+});
+
+app.use("/api", (req, res) => {
+  res.status(404).json({ message: "Ruta API no encontrada" });
+});
 
 // Ruta de prueba
 app.get("/", (req, res) => {
@@ -65,7 +68,10 @@ app.get("/", (req, res) => {
 // Manejo de errores centralizado
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send("¡Algo salió mal!");
+  res.status(500).json({
+    message: "Error interno del servidor",
+    error: err.message,
+  });
 });
 
 // Iniciar servidor

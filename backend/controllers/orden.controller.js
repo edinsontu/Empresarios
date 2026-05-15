@@ -1,21 +1,15 @@
 const ordenModel = require("../models/orden.model");
 const carritoComprasModel = require("../models/carritoCompras.model");
 const clienteModel = require("../models/cliente.model");
-const envioModel = require("../models/envio.model");
-const { v4: uuid } = require("uuid");
+const {v4: uuid} = require("uuid");
 
 const crearOrden = async (req, res) => {
   try {
-    const { clienteId, envioId, costoEnvio } = req.body;
+    const { clienteId } = req.body;
 
     const cliente = await clienteModel.findById(clienteId);
     if (!cliente) {
       return res.status(404).json({ message: "Cliente no encontrado" });
-    }
-
-    const envioCliente = await envioModel.findById(envioId);
-    if (!envioCliente) {
-      return res.status(404).json({ message: "Opción de envío no encontrada" });
     }
 
     const carrito = await carritoComprasModel
@@ -37,19 +31,17 @@ const crearOrden = async (req, res) => {
       (acc, item) => acc + item.precio * item.cantidad,
       0,
     );
-    const total = subtotal + Number(costoEnvio || 0);
-
+    const total = subtotal;
+    
     const referenciaPago = `ORD-${Date.now()}-${uuid()}`;
 
     //Generar nueva orden
     const orden = new ordenModel({
       clienteId,
-      envioId,
       productos,
       subtotal,
       total,
       referenciaPago,
-      costoEnvio,
     });
 
     await orden.save();
@@ -57,7 +49,7 @@ const crearOrden = async (req, res) => {
       .status(201)
       .json({ message: "Orden pendiente creada exitosamente", orden });
   } catch (error) {
-    res.status(400).json({ message: "Error al crear la orden", error });
+    res.status(400).json({ message: "Error al crear la orden" });
   }
 };
 
@@ -97,22 +89,6 @@ const actualizarEstadoOrden = async (req, res) => {
     res
       .status(400)
       .json({ message: "Error al actualizar el estado de la orden" });
-  }
-};
-
-const reducirStock = async (productosVendidos) => {
-  // productosVendidos es un array de { productoId, cantidad }
-  const operaciones = productosVendidos.map(item => ({
-    updateOne: {
-      filter: { _id: item.productoId, cantidad: { $gte: item.cantidad } },
-      update: { $inc: { cantidad: -item.cantidad } }
-    }
-  }));
-
-  try {
-    await Producto.bulkWrite(operaciones);
-  } catch (error) {
-    console.error("Error actualizando el inventario:", error);
   }
 };
 

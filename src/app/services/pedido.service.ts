@@ -9,13 +9,12 @@ declare var ePayco: any; // Acceso al script global de ePayco
   providedIn: 'root',
 })
 export class PedidoService {
-  private apiUrl = `${environments.API_BASE_URL.replace(/\/$/, '')}/`;
-  private apiOrigin = this.apiUrl.replace(/\/api\/$/, '/');
+  private apiUrl = `${environments.API_BASE_URL}/`;
 
   constructor(private http: HttpClient) {}
 
- crearOrden(clienteId: string, envioId: string, costoEnvio: number): Observable<any> {
-    return this.http.post(`${this.apiUrl}ordenes/crear`, { clienteId, envioId, costoEnvio });
+  crearOrden(clienteId: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}ordenes/crear`, { clienteId });
   }
 
   obtenerMisOrdenes(clienteId: string): Observable<any[]> {
@@ -41,8 +40,8 @@ export class PedidoService {
       lang: 'es',
       external: 'false',
 
-      confirmation: `${this.apiOrigin}api/pagos/confirmar-epayco`,
-      response: `${this.apiOrigin}api/pagos/redireccion-final`,
+      confirmation: `${environments.API_BASE_URL}/pagos/confirmar-epayco`,
+      response: `${environments.API_BASE_URL}/pagos/redireccion-final`,
 
       name_billing: usuario.name,
       address_billing: 'Dirección registrada',

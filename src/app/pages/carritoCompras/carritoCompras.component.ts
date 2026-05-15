@@ -1,29 +1,44 @@
-import { Component, OnInit, inject } from '@angular/core';
-import { CarritoService, Carrito } from '../../services/carritoCompras.service';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
+import { CarritoService, Carrito } from '../../services/carritoCompras.service'; // Ajusta la ruta
 import { CommonModule } from '@angular/common';
+import { AuthService } from '../../services/auth/auth.service';
+import { PedidoService } from '../../services/pedido.service';
 import { Router } from '@angular/router';
-import { AlertService } from '../../services/alert.service';
+import { isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-carrito',
-  standalone: true, // Asegúrate de si es standalone o no según tu proyecto
   templateUrl: './carritoCompras.component.html',
   styleUrls: ['./carritoCompras.component.css'],
   imports: [CommonModule],
 })
 export class CarritoComponent implements OnInit {
-  private alertService = inject(AlertService);
-  private carritoService = inject(CarritoService);
-  private router = inject(Router);
   carrito: Carrito | null = null;
   clienteId: string = '';
   cargando: boolean = true;
-  cantidadDisponible: number = 0;
+  private isBrowser: boolean;
 
-  constructor() {}
+  constructor(
+    private carritoService: CarritoService,
+    private authService: AuthService,
+    private router: Router,
+    private pedidoService: PedidoService,
+    @Inject(PLATFORM_ID) private platformId: Object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
+
+  private safeGetLocalStorage(key: string): string | null {
+    if (!this.isBrowser) return null;
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
 
   ngOnInit(): void {
-    const storedId = localStorage.getItem('clienteId');
+    const storedId = this.safeGetLocalStorage('clienteId');
     if (storedId) {
       this.clienteId = storedId;
       this.cargarCarrito();
@@ -47,7 +62,20 @@ export class CarritoComponent implements OnInit {
   }
 
   procesarPago() {
-    this.router.navigate(['/cliente/checkout-logistica']);
+    const usuario = this.authService.getUsuarioActual();
+    const clienteId = this.safeGetLocalStorage('clienteId');
+
+    if (!clienteId) return;
+
+    this.pedidoService.crearOrden(clienteId).subscribe({
+      next: (ordenCreada) => {
+        this.pedidoService.configurarYAbrirCheckout(ordenCreada.orden, usuario);
+      },
+      error: (err) => {
+        console.error('Error al crear la orden', err);
+        alert('No pudimos procesar tu pedido, intenta más tarde.');
+      },
+    });
   }
 
   cambiarCantidad(
@@ -56,44 +84,25 @@ export class CarritoComponent implements OnInit {
     cambio: number,
   ): void {
     const nuevaCantidad = cantidadActual + cambio;
-
     if (nuevaCantidad < 1) return;
-
-    const item = this.carrito?.productos.find(
-      (p) => p.productoId._id === productoId,
-    );
-    const stockDisponible = item?.productoId?.cantidad || 0;
-
-    if (nuevaCantidad > stockDisponible) {
-      this.alertService.error(
-        `Lo sentimos, solo hay ${stockDisponible} unidades disponibles.`,
-      );
-      return;
-    }
 
     this.carritoService
       .actualizarCantidad(this.clienteId, productoId, nuevaCantidad)
       .subscribe({
         next: (res) => (this.carrito = res),
-        error: (err) =>
-          this.alertService.error('Error al actualizar: ' + err.message),
+        error: (err) => alert('Error al actualizar: ' + err.message),
       });
   }
 
   eliminarProducto(productoId: string): void {
-    this.alertService
-      .confirm('¿Estás seguro?', '¿Deseas eliminar este producto del carrito?')
-      .then((confirmed) => {
-        if (confirmed) {
-          this.carritoService
-            .eliminarProducto(this.clienteId, productoId)
-            .subscribe({
-              next: (res) => (this.carrito = res),
-              error: (err) =>
-                this.alertService.error('Error al eliminar: ' + err.message),
-            });
-        }
-      });
+    if (confirm('¿Estás seguro de quitar este producto?')) {
+      this.carritoService
+        .eliminarProducto(this.clienteId, productoId)
+        .subscribe({
+          next: (res) => (this.carrito = res),
+          error: (err) => console.error(err),
+        });
+    }
   }
 
   irProductos() {
@@ -101,18 +110,11 @@ export class CarritoComponent implements OnInit {
   }
 
   vaciarCarrito(): void {
-    this.alertService
-      .confirm('¿Estas seguro?', 'Esta acción vaciará tu carrito')
-      .then((confirmed) => {
-        if (confirmed) {
-          this.carritoService.vaciarCarrito(this.clienteId).subscribe({
-            next: () => (this.carrito = null),
-            error: (err) =>
-              this.alertService.error(
-                'Error al vaciar el carrito: ' + err.message,
-              ),
-          });
-        }
+    if (confirm('¿Deseas vaciar todo tu carrito?')) {
+      this.carritoService.vaciarCarrito(this.clienteId).subscribe({
+        next: () => (this.carrito = null),
+        error: (err) => console.error(err),
       });
+    }
   }
 }

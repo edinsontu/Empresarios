@@ -1,6 +1,5 @@
 const ordenModel = require("../models/orden.model");
 const carritoComprasModel = require("../models/carritoCompras.model");
-const Producto = require("../models/producto.model");
 const crypto = require("crypto");
 
 const confirmarPagoEpayco = async (req, res) => {
@@ -29,43 +28,23 @@ const confirmarPagoEpayco = async (req, res) => {
       return res.status(404).send("Orden no encontrada");
     }
 
-    // Evitar procesar la misma orden dos veces
-    if (orden.estado === "completada") {
-        return res.status(200).send("Orden ya fue procesada anteriormente");
-    }
-
     const codRespuesta = parseInt(data.x_cod_response);
 
     if (codRespuesta === 1) {
       orden.estado = "completada";
       orden.epaycoTransactionId = data.x_transaction_id;
 
-      const operaciones = orden.productos.map(item => ({
-        updateOne: {
-          filter: { _id: item.productoId, cantidad: { $gte: item.cantidad } },
-          update: { $inc: { cantidad: -item.cantidad } }
-        }
-      }));
-      
-      try {
-        await Producto.bulkWrite(operaciones);
-        console.log("Stock actualizado correctamente.");
-      } catch (errorStock) {
-        console.error("Error al descontar stock:", errorStock);
-        
-      }
-
       await carritoComprasModel.findOneAndDelete({
         clienteId: orden.clienteId,
       });
-      
-      console.log("Pago aceptado. Orden completada y stock descontado.");
+      console.log("Pago aceptado. Orden completada y carrito limpio.");
     } else if ([2, 4, 10].includes(codRespuesta)) {
       orden.estado = "rechazada";
       console.log("Pago rechazado/fallido.");
     }
 
     await orden.save();
+
     res.status(200).send("OK");
   } catch (error) {
     console.error("Error crítico en Webhook:", error);
@@ -93,8 +72,9 @@ const verificarEstadoTrasPago = async (req, res) => {
 
 const redireccionFinal = (req, res) => {
   const queryParams = new URLSearchParams(req.query).toString();
+  const frontendUrl = process.env.FRONTEND_URL || "http://localhost:4200";
 
-  res.redirect(`http://localhost:4200/pago-finalizado?${queryParams}`);
+  res.redirect(`${frontendUrl}/pago-finalizado?${queryParams}`);
 };
 
 module.exports = {

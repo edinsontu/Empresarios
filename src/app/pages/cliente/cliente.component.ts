@@ -1,72 +1,76 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, OnInit, PLATFORM_ID } from '@angular/core';
 import { ProductoService } from '../../services/producto.service';
 import { CarritoService } from '../../services/carritoCompras.service'; // 1. Importar servicio
 import { FormsModule } from '@angular/forms';
-import { CommonModule } from '@angular/common';
-import { AlertService } from '../../services/alert.service';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard-cliente',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './cliente.component.html',
-  styleUrls: ['./cliente.component.css'],
+  styleUrls: ['./cliente.component.css']
 })
 export class ClienteComponent implements OnInit {
+
   productos: any[] = [];
   productosFiltrados: any[] = [];
   busqueda: string = '';
-  clienteId: string = '';
+  clienteId: string = ''; 
+  private isBrowser: boolean;
 
   constructor(
     private productoService: ProductoService,
     private carritoService: CarritoService,
-    private alertService: AlertService,
-  ) {}
+    @Inject(PLATFORM_ID) private platformId: Object,
+  ) {
+    this.isBrowser = isPlatformBrowser(this.platformId);
+  }
+
+  private safeGetLocalStorage(key: string): string | null {
+    if (!this.isBrowser) return null;
+    try {
+      return localStorage.getItem(key);
+    } catch {
+      return null;
+    }
+  }
 
   ngOnInit() {
-    const storedId = localStorage.getItem('clienteId');
+    const storedId = this.safeGetLocalStorage('clienteId');
     if (storedId) this.clienteId = storedId;
 
     this.productoService.getTodosLosProductos().subscribe(
-      (res) => {
+      res => {
         this.productos = res;
         this.productosFiltrados = res;
       },
-      (err) => console.error(err),
+      err => console.error(err)
     );
   }
 
   agregarAlCarrito(producto: any) {
     if (!this.clienteId) {
-      this.alertService.error('Debes iniciar sesión para agregar productos.');
+      alert('Debes iniciar sesión para agregar productos.');
       return;
     }
 
-    if (producto.cantidad <= 0) {
-      this.alertService.error('Este producto se encuentra agotado temporalmente.');
-      return;
-    }
-
-    this.carritoService
-      .agregarProducto(this.clienteId, producto._id, 1)
-      .subscribe({
-        next: (res) => {
-          this.alertService.success(`¡${producto.nombre} agregado al carrito!`);
-        },
-        error: (err) => {
-          console.error(err);
-          this.alertService.error(err.error?.message || 'Error al agregar al carrito');
-        },
-      });
+    this.carritoService.agregarProducto(this.clienteId, producto._id, 1).subscribe({
+      next: (res) => {
+        alert(`¡${producto.nombre} agregado al carrito!`);
+      },
+      error: (err) => {
+        console.error(err);
+        alert('Error al agregar al carrito');
+      }
+    });
   }
 
   filtrarProductos() {
     const termino = this.busqueda.toLowerCase();
-    this.productosFiltrados = this.productos.filter(
-      (p) =>
-        p.nombre.toLowerCase().includes(termino) ||
-        p.emprendedorId?.name?.toLowerCase().includes(termino),
+    this.productosFiltrados = this.productos.filter(p =>
+      p.nombre.toLowerCase().includes(termino) ||
+      p.emprendedorId?.name?.toLowerCase().includes(termino)
     );
   }
 

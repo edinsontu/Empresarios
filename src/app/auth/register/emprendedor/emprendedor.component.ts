@@ -28,14 +28,22 @@ export class RegisterEmprendedorComponent {
 
   onSubmit() {
     if (this.emprendedor.name && this.emprendedor.nameEmprendimiento && this.emprendedor.email && this.emprendedor.password) {
-      this.authService.registerEmprendedor(this.emprendedor).subscribe({
+      const payload = {
+        ...this.emprendedor,
+        name: this.emprendedor.name.trim(),
+        nameEmprendimiento: this.emprendedor.nameEmprendimiento.trim(),
+        email: this.emprendedor.email.trim().toLowerCase(),
+      };
+
+      this.authService.registerEmprendedor(payload).subscribe({
         next: (res) => {
           this.alertService.success('Emprendedor registrado con éxito');
           this.router.navigate(['/login']);
           console.log(res);
         },
         error: (err) => {
-          this.alertService.error('Error','Error al registrar emprendedor');
+          const backendMessage = err?.error?.message || err?.error?.error || 'Error al registrar emprendedor';
+          this.alertService.error('Error', backendMessage);
           console.error(err);
         }
       });

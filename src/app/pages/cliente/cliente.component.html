@@ -1,51 +1,58 @@
-<div class="dashboard-wrapper">
-  <div class="header-section">
-    <h2><i class="fas fa-leaf"></i> Mercado Local</h2>
-    <p>Apoya el talento de nuestros emprendedores</p>
+<div class="dashboard-container">
+  <h2><i class="fas fa-store"></i> Productos Disponibles</h2>
+
+  <div class="formulario animar">
+    <label for="busqueda">
+      <i class="fas fa-search"></i> Buscar producto o emprendedor:
+    </label>
+    <input
+      id="busqueda"
+      [(ngModel)]="busqueda"
+      (input)="filtrarProductos()"
+      type="text"
+      placeholder="🔍 Escribe para buscar..."
+    />
   </div>
 
-  <div class="search-box animar">
-    <div class="input-wrapper">
-      <i class="fas fa-search"></i>
-      <input
-        [(ngModel)]="busqueda"
-        (input)="filtrarProductos()"
-        type="text"
-        placeholder="Buscar producto..."
+  <div class="lista-productos">
+    <div *ngFor="let producto of productosFiltrados" class="producto animar">
+      <h4><i class="fas fa-box"></i> {{ producto.nombre }}</h4>
+      <img
+        *ngIf="producto.imagen"
+        [src]="producto.imagen"
+        alt="{{ producto.nombre }}"
+        class="producto-img"
       />
-    </div>
-  </div>
+      <p>
+        <strong><i class="fas fa-tag"></i> Precio:</strong>
+        {{ producto.precio | currency }}
+      </p>
+      <p>
+        <strong><i class="fas fa-info-circle"></i> Descripción:</strong>
+        {{ producto.descripcion }}
+      </p>
+      <p>
+        <strong><i class="fas fa-user"></i> Emprendedor:</strong>
+        {{ producto.emprendedorId?.name }}
+      </p>
+      <p>
+        <strong><i class="fas fa-briefcase"></i> Emprendimiento:</strong>
+        {{ producto.emprendedorId?.nameEmprendimiento }}
+      </p>
 
-  <div class="productos-grid">
-    <div *ngFor="let producto of productosFiltrados" class="card-producto animar">
-      <div class="image-container">
-        <span class="badge-stock" [class.out]="producto.cantidad <= 0">
-          {{ producto.cantidad > 0 ? producto.cantidad + ' disp.' : 'Agotado' }}
-        </span>
-        <img [src]="producto.imagen || 'assets/no-image.png'" [alt]="producto.nombre" />
-      </div>
-
-      <div class="info-producto">
-        <h4>{{ producto.nombre }}</h4>
-        <p class="brand"><i class="fas fa-store"></i> {{ producto.emprendedorId?.nameEmprendimiento }}</p>
-        <p class="description">{{ producto.descripcion | slice:0:60 }}{{ producto.descripcion.length > 60 ? '...' : '' }}</p>
-        
-        <div class="price-row">
-          <span class="price">{{ producto.precio | currency:'USD':'symbol':'1.0-0' }}</span>
-        </div>
-
-        <div class="acciones-grid">
-          <a [href]="generarLinkWhatsApp(producto.emprendedorId?.tel)" target="_blank" class="btn-wa">
-            <i class="fab fa-whatsapp"></i>
-          </a>
-          <button 
-            class="btn-add" 
-            (click)="agregarAlCarrito(producto)"
-            [disabled]="producto.cantidad <= 0">
-            <i class="fas" [ngClass]="producto.cantidad > 0 ? 'fa-cart-plus' : 'fa-times-circle'"></i>
-            {{ producto.cantidad > 0 ? 'Añadir' : 'Agotado' }}
+      <div class="producto-acciones">
+        <a
+          [href]="generarLinkWhatsApp(producto.emprendedorId?.tel)"
+          target="_blank"
+        >
+          <button class="btn-whatsapp">
+            <i class="fab fa-whatsapp"></i> WhatsApp
           </button>
-        </div>
+        </a>
+
+        <button class="btn-add-cart" (click)="agregarAlCarrito(producto)">
+          <i class="fas fa-cart-plus"></i> Agregar al Carrito
+        </button>
       </div>
     </div>
   </div>

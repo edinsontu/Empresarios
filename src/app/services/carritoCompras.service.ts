@@ -13,7 +13,7 @@ export interface Carrito {
 @Injectable({
   providedIn: 'root'
 })
-export class CarritoService { 
+export class CarritoService { // Cambié el nombre a CarritoService por convención
 
   private API_URL = `${environments.API_BASE_URL}/carrito`;
 

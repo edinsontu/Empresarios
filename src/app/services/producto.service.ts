@@ -15,7 +15,7 @@ export class ProductoService {
 
   // Obtener todos los productos de un emprendedor
   getProductosPorEmprendedor(emprendedorId: string): Observable<any[]> {
-    return this.http.get<any[]>(`${API_URL}/emprendedor/${emprendedorId}`); 
+    return this.http.get<any[]>(`${API_URL}/emprendedor/${emprendedorId}`); // 👈 Asegúrate que coincida con tu ruta en Express
   }
 
   getTodosLosProductos(): Observable<any[]> {

@@ -12,7 +12,6 @@ import { ClienteGuard } from './guards/cliente.guard';
 import { EmprendedorGuard } from './guards/emprendedor.guard';
 import { PagoFinalizadoComponent } from './pages/pago-finalizado/pago-finalizado.component';
 import { NgModule } from '@angular/core';
-import { CheckoutLogisticaComponent } from './pages/checkout-logistica.component/checkout-logistica.component';
 
 
 export const routes: Routes = [
@@ -24,7 +23,6 @@ export const routes: Routes = [
   { path: 'cliente/dashboard', component: ClienteComponent, canActivate: [AuthGuard, ClienteGuard] },
   { path: 'carrito', component: CarritoComponent, canActivate: [AuthGuard, ClienteGuard] },
   { path: 'pago-finalizado', component: PagoFinalizadoComponent },
-  {path: 'cliente/checkout-logistica', component: CheckoutLogisticaComponent, canActivate: [AuthGuard, ClienteGuard]},
   { path: 'emprendedor/dashboard', component: EmprendedorComponent, canActivate: [AuthGuard, EmprendedorGuard]},
   { path: '', redirectTo: 'login', pathMatch: 'full' }
 

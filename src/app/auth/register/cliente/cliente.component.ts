@@ -27,14 +27,21 @@ export class RegisterClienteComponent {
 
   onSubmit() {
     if (this.cliente.name && this.cliente.email && this.cliente.password) {
-      this.authService.registerCliente(this.cliente).subscribe({
+      const payload = {
+        ...this.cliente,
+        name: this.cliente.name.trim(),
+        email: this.cliente.email.trim().toLowerCase(),
+      };
+
+      this.authService.registerCliente(payload).subscribe({
         next: (res) => {
           this.alertService.success('Cliente registrado con éxito');
           this.router.navigate(['/login']);
           console.log(res);
         },
         error: (err) => {
-          this.alertService.error('Error','Error al registrar cliente');
+          const backendMessage = err?.error?.message || err?.error?.error || 'Error al registrar cliente';
+          this.alertService.error('Error', backendMessage);
           console.error(err);
         }
       });
