@@ -1,0 +1,27 @@
+services:
+  # ─── Backend (API Express) ───────────────────────────────────────────────────
+  - type: web
+    name: upspot-backend
+    runtime: node
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node server.js
+    envVars:
+      - key: PORT
+        value: 3000
+      - key: MONGODB_URI
+        sync: false          # lo ingresas manualmente en Render
+      - key: FRONTEND_URL
+        sync: false          # lo ingresas manualmente con la URL del frontend
+
+  # ─── Frontend (Angular SSR) ──────────────────────────────────────────────────
+  - type: web
+    name: upspot-frontend
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: node dist/pagina-maye/server/server.mjs
+    envVars:
+      - key: PORT
+        value: 4000
+      - key: API_PROXY_TARGET
+        sync: false          # lo ingresas manualmente con la URL del backend
