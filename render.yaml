@@ -7,12 +7,12 @@ services:
     buildCommand: npm install
     startCommand: node server.js
     envVars:
-      - key: PORT
-        value: 3000
+      - key: NODE_VERSION
+        value: 20
       - key: MONGODB_URI
-        sync: false          # lo ingresas manualmente en Render
+        sync: false          # ingrésalo manualmente en Render → tu cadena de MongoDB Atlas
       - key: FRONTEND_URL
-        sync: false          # lo ingresas manualmente con la URL del frontend
+        sync: false          # ingrésalo manualmente: https://upspot-frontend.onrender.com
 
   # ─── Frontend (Angular SSR) ──────────────────────────────────────────────────
   - type: web
@@ -21,7 +21,10 @@ services:
     buildCommand: npm install && npm run build
     startCommand: node dist/pagina-maye/server/server.mjs
     envVars:
-      - key: PORT
-        value: 4000
+      - key: NODE_VERSION
+        value: 20
       - key: API_PROXY_TARGET
-        sync: false          # lo ingresas manualmente con la URL del backend
+        fromService:
+          type: web
+          name: upspot-backend
+          property: host

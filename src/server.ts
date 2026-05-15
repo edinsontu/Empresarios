@@ -14,7 +14,8 @@ const browserDistFolder = resolve(serverDistFolder, '../browser');
 
 const app = express();
 const angularApp = new AngularNodeAppEngine();
-const apiProxyTarget = process.env['API_PROXY_TARGET'] || process.env['BACKEND_URL'] || 'http://localhost:3000';
+const rawTarget = process.env['API_PROXY_TARGET'] || process.env['BACKEND_URL'] || 'http://localhost:3000';
+const apiProxyTarget = rawTarget.startsWith('http') ? rawTarget : `http://${rawTarget}`;
 
 /**
  * Example Express Rest API endpoints can be defined here.
