@@ -1,0 +1,95 @@
+.status-container {
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  background-color: #f8fafc;
+  font-family: "Poppins", sans-serif;
+}
+
+.status-card {
+  background: white;
+  padding: 3rem;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(140, 84, 185, 0.15);
+  max-width: 500px;
+  width: 100%;
+  text-align: center;
+}
+
+.icon-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1.5rem;
+}
+
+.icon-circle svg {
+  width: 40px;
+  height: 40px;
+  color: white;
+}
+
+.success { background: #10b981; } /* Verde esmeralda */
+.error { background: #ef4444; }   /* Rojo */
+
+h1 {
+  color: #543255;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+p {
+  color: #64748b;
+  margin-bottom: 2rem;
+}
+
+.order-details {
+  background: #f1f5f9;
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+}
+
+.detail-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* Reutilizando tu estética de botones */
+.btn-primary {
+  background: linear-gradient(90deg, #8c54b9, #b59bcb);
+  color: white;
+  border: none;
+  padding: 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.btn-secondary {
+  background: transparent;
+  color: #8c54b9;
+  border: 2px solid #8c54b9;
+  padding: 1rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-primary:hover, .btn-secondary:hover {
+  transform: translateY(-2px);
+}

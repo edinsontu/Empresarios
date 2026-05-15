@@ -1,0 +1,329 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+/* Nuevo contenedor para agrupar carrito y usuario a la derecha */
+.navbar-actions {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem; /* Espacio entre carrito y nombre de usuario */
+}
+
+/* Envolver el menú para posicionamiento absoluto del dropdown */
+.user-menu-wrapper {
+  position: relative;
+}
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.user-menu:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* Corregir la rotación del icono */
+.dropdown-icon {
+  transition: transform 0.3s ease;
+}
+
+.dropdown-icon.rotate {
+  transform: rotate(180deg);
+}
+
+/* Estilo para el ítem de logout */
+.logout-item {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  color: #ffcfcf !important;
+}
+
+/* Badge del carrito: Asegurar que se vea sobre el botón */
+.cart-badge {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: #ff4d4d; /* Un color que resalte */
+  color: white;
+  border: 2px solid #8c54b9;
+}
+.navbar {
+  background: linear-gradient(90deg, #8c54b9, #b59bcb);
+  padding: 1rem 2rem;
+  color: #f8fafc;
+  font-family: "Poppins", sans-serif;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 15px rgba(142, 4, 206, 0.5);
+}
+
+/* Contenedor para alineación */
+.nav-cart-container {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+}
+
+/* Estilo base del botón */
+.btn-nav-cart {
+  background: linear-gradient(90deg, #543255, #9f789f);
+  border: none;
+  padding: 0.6rem 1.2rem;
+  color: white;
+  font-family: "Poppins", sans-serif;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 30px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  position: relative;
+  box-shadow: 0 4px 10px rgba(134, 97, 135, 0.3);
+  transition: all 0.3s ease;
+}
+
+/* Efectos al pasar el mouse */
+.btn-nav-cart:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px #866187;
+  background: linear-gradient(90deg, #9f789f, #543255);
+}
+
+/* Icono dentro del botón */
+.btn-nav-cart svg {
+  width: 18px;
+  height: 18px;
+  stroke: white;
+}
+
+/* Etiqueta de texto (opcional, puedes quitarla en móvil) */
+.cart-label {
+  display: inline-block;
+}
+
+/* El "Badge" o contador circular */
+.cart-badge {
+  background-color: white;
+  color: #543255;
+  font-size: 0.75rem;
+  font-weight: 700;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  border: 2px solid #543255;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsivo: Solo mostrar icono en pantallas pequeñas */
+@media (max-width: 600px) {
+  .cart-label {
+    display: none;
+  }
+  .btn-nav-cart {
+    padding: 0.6rem;
+  }
+}
+.navbar-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.logo {
+  font-weight: 700;
+  font-size: 1.8rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  user-select: none;
+  color: white;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  transition:
+    transform 0.3s ease,
+    color 0.3s ease;
+}
+
+.logo:hover {
+  color: #bfdbfe;
+  transform: scale(1.05);
+}
+
+.logo-icon {
+  width: 28px;
+  height: 28px;
+  margin-right: 10px;
+  stroke: white;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  gap: 2rem;
+  margin: 0;
+  padding: 0;
+  font-weight: 600;
+}
+
+.nav-links li {
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+.nav-links li:hover {
+  background-color: rgba(255 255 255 / 0.2);
+  color: #bfdbfe;
+}
+
+.nav-icon {
+  width: 20px;
+  height: 20px;
+  stroke: white;
+  transition: stroke 0.3s ease;
+}
+
+.nav-links li:hover .nav-icon {
+  stroke: #bfdbfe;
+}
+
+/* User Menu */
+
+.user-menu {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  user-select: none;
+  font-weight: 600;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.user-menu:hover {
+  color: #bfdbfe;
+}
+
+.welcome-text {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.user-icon {
+  width: 24px;
+  height: 24px;
+  stroke: white;
+  transition: stroke 0.3s ease;
+}
+
+.dropdown-icon {
+  width: 18px;
+  height: 18px;
+  stroke: white;
+  transition: transform 0.3s ease;
+}
+
+.user-menu:hover .dropdown-icon {
+  transform: rotate(180deg);
+  stroke: #bfdbfe;
+}
+
+/* Dropdown menu */
+.dropdown-menu {
+  position: absolute;
+  top: 130%;
+  right: 0;
+  background: #9f789f;
+  border-radius: 10px;
+  min-width: 160px;
+  box-shadow: 0 6px 18px #b890b8;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease,
+    visibility 0.3s;
+  list-style: none;
+  padding: 0.4rem 0;
+  font-weight: 600;
+  z-index: 50;
+}
+
+.dropdown-menu.show {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.dropdown-menu li {
+  padding: 0.75rem 1.2rem;
+  cursor: pointer;
+  color: white;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: background-color 0.25s ease;
+  border-radius: 6px;
+}
+
+.dropdown-menu li:hover {
+  background-color: #6d496e;
+  color: #bfdbfe;
+}
+
+.dropdown-item-icon {
+  width: 20px;
+  height: 20px;
+  stroke: white;
+  transition: stroke 0.3s ease;
+}
+
+.dropdown-menu li:hover .dropdown-item-icon {
+  stroke: #bfdbfe;
+}
+
+/* Responsive */
+
+@media (max-width: 700px) {
+  .navbar-container {
+    flex-wrap: wrap;
+  }
+
+  .nav-links {
+    width: 100%;
+    justify-content: center;
+    margin-top: 0.8rem;
+    gap: 1.2rem;
+  }
+
+  .nav-links li {
+    padding: 0.6rem 1rem;
+  }
+}

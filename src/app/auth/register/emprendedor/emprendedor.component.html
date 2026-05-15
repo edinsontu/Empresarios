@@ -1,0 +1,73 @@
+<!-- Font Awesome para iconos -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+<div class="register-container">
+  <div class="register-card">
+    <div class="register-header">
+      <i class="fas fa-briefcase logo"></i>
+      <h2>Registro de Emprendedor</h2>
+      <p>Únete y empieza a ofrecer tus productos</p>
+    </div>
+
+    <form #registerForm="ngForm" (ngSubmit)="onSubmit()" novalidate>
+      <div class="form-group">
+        <label for="name"><i class="fas fa-user"></i> Nombre</label>
+        <input type="text" id="name" name="name" [(ngModel)]="emprendedor.name" required placeholder="Tu nombre"
+          #nameInput="ngModel" [class.invalid]="nameInput.invalid && (nameInput.touched || registerForm.submitted)" />
+        <div *ngIf="nameInput.invalid && (nameInput.touched || registerForm.submitted)" class="field-error">
+          <i class="fas fa-info-circle"></i> El nombre es obligatorio
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="nameEmprendimiento"><i class="fas fa-store"></i> Nombre del Emprendimiento</label>
+        <input type="text" id="nameEmprendimiento" name="nameEmprendimiento"
+          [(ngModel)]="emprendedor.nameEmprendimiento" required placeholder="Nombre del negocio"
+          #nameEmpInput="ngModel" [class.invalid]="nameEmpInput.invalid && (nameEmpInput.touched || registerForm.submitted)" />
+        <div *ngIf="nameEmpInput.invalid && (nameEmpInput.touched || registerForm.submitted)" class="field-error">
+          <i class="fas fa-info-circle"></i> El nombre del emprendimiento es obligatorio
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="email"><i class="fas fa-envelope"></i> Correo electrónico</label>
+        <input type="email" id="email" name="email" [(ngModel)]="emprendedor.email" required placeholder="ejemplo@email.com"
+          #emailInput="ngModel" [class.invalid]="emailInput.invalid && (emailInput.touched || registerForm.submitted)" />
+        <div *ngIf="emailInput.invalid && (emailInput.touched || registerForm.submitted)" class="field-error">
+          <i class="fas fa-info-circle"></i>
+          <span *ngIf="emailInput.errors?.['required']">El correo es obligatorio</span>
+          <span *ngIf="emailInput.errors?.['email']">Formato de correo inválido</span>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="tel"><i class="fas fa-phone"></i> Contacto</label>
+        <input type="number" id="tel" name="tel" [(ngModel)]="emprendedor.tel" required placeholder="Tu número"
+          #telInput="ngModel" [class.invalid]="telInput.invalid && (telInput.touched || registerForm.submitted)" />
+        <div *ngIf="telInput.invalid && (telInput.touched || registerForm.submitted)" class="field-error">
+          <i class="fas fa-info-circle"></i> El teléfono es obligatorio
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label for="password"><i class="fas fa-lock"></i> Contraseña</label>
+        <input type="password" id="password" name="password" [(ngModel)]="emprendedor.password" required minlength="6"
+          placeholder="••••••" #passwordInput="ngModel"
+          [class.invalid]="passwordInput.invalid && (passwordInput.touched || registerForm.submitted)" />
+        <div *ngIf="passwordInput.invalid && (passwordInput.touched || registerForm.submitted)" class="field-error">
+          <i class="fas fa-info-circle"></i>
+          <span *ngIf="passwordInput.errors?.['required']">La contraseña es obligatoria</span>
+          <span *ngIf="passwordInput.errors?.['minlength']">Mínimo 6 caracteres</span>
+        </div>
+      </div>
+
+      <button type="submit" [disabled]="registerForm.invalid" class="auth-button">
+        Registrarse <i class="fas fa-user-check"></i>
+      </button>
+    </form>
+
+    <div class="register-footer">
+      <p>¿Ya tienes cuenta? <a (click)="irALogin()">Inicia sesión aquí</a></p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,104 @@
+<section class="hero-mini">
+  <div class="hero-content">
+    <h1>Logística de Entrega</h1>
+    <p>Asegura que tus productos lleguen al lugar correcto</p>
+  </div>
+</section>
+
+<div class="container">
+  <div class="checkout-grid">
+    
+    <div class="options-section">
+      <div class="delivery-toggle card">
+        <button [class.active]="tipoEnvio === 'domicilio'" (click)="cambiarTipoEnvio('domicilio')">
+          <i class="fas fa-truck"></i> Domicilio
+        </button>
+        <button [class.active]="tipoEnvio === 'punto_recogida'" (click)="cambiarTipoEnvio('punto_recogida')">
+          <i class="fas fa-store"></i> Recoger
+        </button>
+      </div>
+
+      <div *ngIf="tipoEnvio === 'domicilio'" class="animate-fade">
+        <div class="section-header">
+          <h3>Mis Direcciones</h3>
+          <button class="btn-add" (click)="abrirModalDireccion()">
+            {{ mostrarForm ? 'Cancelar' : '+ Nueva Dirección' }}
+          </button>
+        </div>
+
+        <div *ngIf="mostrarForm" class="card form-card animate-fade">
+          <h4>Nueva Ubicación</h4>
+          <div class="form-grid">
+            <input type="text" [(ngModel)]="nuevaDireccion.departamento" placeholder="Departamento" name="depto">
+            <input type="text" [(ngModel)]="nuevaDireccion.ciudad" placeholder="Ciudad" name="ciudad">
+            <input type="text" [(ngModel)]="nuevaDireccion.barrio" placeholder="Barrio" name="barrio">
+            <input type="text" [(ngModel)]="nuevaDireccion.direccion" placeholder="Dirección (Ej: Cra 1 #5-2)" name="dir">
+            <textarea [(ngModel)]="nuevaDireccion.descripcion" placeholder="Notas (Apto, oficina, color de casa...)" class="full-width"></textarea>
+          </div>
+          <button class="btn-primary" (click)="guardarDireccion()">Guardar y Usar</button>
+        </div>
+
+        <div class="selection-list" *ngIf="!mostrarForm">
+          <div class="selection-card card" 
+               *ngFor="let dir of direcciones" 
+               [class.selected]="seleccionId === dir._id"
+               (click)="seleccionarOpcion(dir._id)">
+            <div class="card-icon"><i class="fas fa-map-marker-alt"></i></div>
+            <div class="card-info">
+              <strong>{{dir.direccion}}</strong>
+              <span>{{dir.barrio}}, {{dir.ciudad}}</span>
+            </div>
+            <div class="check-mark" *ngIf="seleccionId === dir._id">✓</div>
+          </div>
+          
+          <div *ngIf="direcciones.length === 0 && !mostrarForm" class="empty-state">
+            <p>No tienes direcciones registradas.</p>
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="tipoEnvio === 'punto_recogida'" class="animate-fade">
+        <h3>Puntos de Entrega</h3>
+        <div class="selection-list">
+          <div class="selection-card card" 
+               *ngFor="let punto of puntosRecogida" 
+               [class.selected]="seleccionId === punto._id"
+               (click)="seleccionarOpcion(punto._id, punto.costo)">
+            <div class="card-icon"><i class="fas fa-building"></i></div>
+            <div class="card-info">
+              <strong>{{punto.nombre}}</strong>
+              <span>{{punto.ciudad}}</span>
+              <small class="free-tag" *ngIf="punto.costo === 0">Sin costo adicional</small>
+              <small *ngIf="punto.costo > 0">+ ${{punto.costo | number}} servicio</small>
+            </div>
+            <div class="check-mark" *ngIf="seleccionId === punto._id">✓</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="summary-section">
+      <div class="card summary-card sticky">
+        <h2>Tu Pedido</h2>
+        <div class="summary-details">
+          <div class="summary-row">
+            <span>Productos:</span>
+            <span>${{ carrito?.total | number }}</span>
+          </div>
+          <div class="summary-row">
+            <span>Envío:</span>
+            <span [class.free]="costoEnvio === 0">{{ costoEnvio === 0 ? '¡Gratis!' : '$' + (costoEnvio | number) }}</span>
+          </div>
+          <div class="summary-row total">
+            <span>Pagarás:</span>
+            <span>${{ totalFinal | number }}</span>
+          </div>
+        </div>
+        <button class="btn-checkout" [disabled]="!seleccionId" (click)="confirmarYIrAPago()">
+          Pagar con ePayco
+        </button>
+        <button class="btn-back" (click)="irAlCarrito()">Revisar Carrito</button>
+      </div>
+    </div>
+  </div>
+</div>

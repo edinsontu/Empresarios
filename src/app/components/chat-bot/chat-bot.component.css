@@ -1,0 +1,103 @@
+.chat-bot {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  font-family: 'Poppins', sans-serif;
+}
+
+.chat-toggle {
+  background-color: #6d496e;
+  color: white;
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  font-size: 28px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease;
+}
+
+.chat-toggle:hover {
+  transform: scale(1.05);
+}
+
+.chat-window {
+  width: 300px;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  animation: fadeInUp 0.3s ease forwards;
+}
+
+.chat-header {
+  background: #9f789f;
+  color: white;
+  padding: 0.8rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+.chat-body {
+  padding: 1rem;
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.chat-body .bot {
+  background: #f1f5f9;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 0.6rem;
+  max-width: 80%;
+  align-self: flex-start;
+}
+
+.chat-body .user {
+  background: #dbeafe;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  margin-bottom: 0.6rem;
+  max-width: 80%;
+  align-self: flex-end;
+  text-align: right;
+}
+
+.chat-options {
+  padding: 0.5rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.chat-options button {
+  background: #866187;
+  color: white;
+  border: none;
+  padding: 0.6rem 1rem;
+  border-radius: 50px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.chat-options button:hover {
+  background: #b890b8;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
