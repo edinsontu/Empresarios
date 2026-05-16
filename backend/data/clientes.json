@@ -1,0 +1,24 @@
+[
+  {
+    "_id": "cli001",
+    "nombre": "Juan Pérez",
+    "email": "juan@example.com",
+    "password": "$2a$10$hash1",
+    "telefono": "123456789",
+    "direccion": "Calle 1 #123",
+    "ciudad": "Bogotá",
+    "pais": "Colombia",
+    "createdAt": "2026-05-16T00:00:00.000Z"
+  },
+  {
+    "_id": "cli002",
+    "nombre": "María García",
+    "email": "maria@example.com",
+    "password": "$2a$10$hash2",
+    "telefono": "987654321",
+    "direccion": "Calle 2 #456",
+    "ciudad": "Medellín",
+    "pais": "Colombia",
+    "createdAt": "2026-05-16T00:00:00.000Z"
+  }
+]

@@ -23,11 +23,20 @@ app.use(
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
 
-// Conexión a MongoDB
+// Flag para saber si usar MongoDB o simulador JSON
+let useJsonDb = false;
+
+// Intentar conexión a MongoDB
 mongoose
   .connect(process.env.MONGODB_URI || "mongodb://localhost:27017/microempresarios")
-  .then(() => console.log("✅ Conectado a MongoDB"))
-  .catch((err) => console.error("❌ Error de conexión:", err));
+  .then(() => {
+    console.log("✅ Conectado a MongoDB");
+    useJsonDb = false;
+  })
+  .catch((err) => {
+    console.error("⚠️ No se pudo conectar a MongoDB. Usando simulador JSON:", err.message);
+    useJsonDb = true;
+  });
 
 // Importar rutas
 const clienteRoutes = require("./routes/cliente.routes");
@@ -37,6 +46,9 @@ const productoRoutes = require("./routes/producto.routes");
 const loginRoutes = require("./routes/login.routes"); 
 const ordenRoutes = require("./routes/orden.routes");
 const pagoRoutes = require("./routes/pago.routes");
+
+// Exponer el flag de JSON DB globalmente
+global.useJsonDb = () => useJsonDb;
 
 // Configuración de rutas
 app.use("/api/clientes", clienteRoutes);
@@ -53,6 +65,8 @@ app.get("/api/health", (req, res) => {
     ok: true,
     service: "backend",
     mongoConnected,
+    usingJsonDb: useJsonDb,
+    dbMode: useJsonDb ? "JSON (simulado)" : "MongoDB",
   });
 });
 

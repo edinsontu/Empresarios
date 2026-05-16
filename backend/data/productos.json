@@ -1,0 +1,32 @@
+[
+  {
+    "_id": "prod001",
+    "nombre": "Laptop Dell",
+    "descripcion": "Laptop de alta performance",
+    "precio": 1200,
+    "stock": 10,
+    "imagen": "/assets/laptop.jpg",
+    "emprendedorId": "emp001",
+    "createdAt": "2026-05-16T00:00:00.000Z"
+  },
+  {
+    "_id": "prod002",
+    "nombre": "Mouse Logitech",
+    "descripcion": "Mouse inalámbrico profesional",
+    "precio": 45,
+    "stock": 50,
+    "imagen": "/assets/mouse.jpg",
+    "emprendedorId": "emp001",
+    "createdAt": "2026-05-16T00:00:00.000Z"
+  },
+  {
+    "_id": "prod003",
+    "nombre": "Teclado Mecánico",
+    "descripcion": "Teclado gaming RGB",
+    "precio": 120,
+    "stock": 25,
+    "imagen": "/assets/keyboard.jpg",
+    "emprendedorId": "emp002",
+    "createdAt": "2026-05-16T00:00:00.000Z"
+  }
+]

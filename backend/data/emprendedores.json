@@ -1,0 +1,28 @@
+[
+  {
+    "_id": "emp001",
+    "nombre": "TechStore Colombia",
+    "email": "info@techstore.com",
+    "password": "$2a$10$hash1",
+    "telefono": "600111222",
+    "ciudad": "Bogotá",
+    "descripcion": "Tienda de electrónica de calidad",
+    "logoUrl": "/assets/logo1.png",
+    "calificacion": 4.8,
+    "totalProductos": 2,
+    "createdAt": "2026-05-16T00:00:00.000Z"
+  },
+  {
+    "_id": "emp002",
+    "nombre": "GamerGear",
+    "email": "info@gamergear.com",
+    "password": "$2a$10$hash2",
+    "telefono": "600333444",
+    "ciudad": "Medellín",
+    "descripcion": "Accesorios gaming premium",
+    "logoUrl": "/assets/logo2.png",
+    "calificacion": 4.5,
+    "totalProductos": 1,
+    "createdAt": "2026-05-16T00:00:00.000Z"
+  }
+]
